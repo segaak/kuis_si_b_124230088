@@ -5,26 +5,26 @@ class LoginPage extends StatefulWidget {
   LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState(); //ini harusnya dah otomtatis kebuat kalau bikin stateful widget
+  State<LoginPage> createState() => _LoginPageState(); 
 }
 
-class _LoginPageState extends State<LoginPage> { //ini harusnya dah otomtatis kebuat kalau bikin stateful widget
+class _LoginPageState extends State<LoginPage> { 
   String username = '';
   String password = '';
    bool _isObscure = true;
-  bool isLoginSuccess = true; // Awalnya true agar tombol berwarna pink
+  bool isLoginSuccess = true; 
 
   @override
   Widget build(BuildContext context) { 
-    return SafeArea( //agar gak ke ketutupan notch gunanya safe area
-      child: Scaffold( //scaffold itu layout dasar dari flutter gunanya buat nampung widget-widget lain. child itu isinya scaffold
-        appBar: AppBar(  //appbar itu semacam header 
+    return SafeArea( 
+      child: Scaffold( 
+        appBar: AppBar(   
           title: const Text('Login Page'),
           backgroundColor: Colors.pink, 
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center, //biar di tengah
-          children: [ //widget-widget yang mau ditampilin di body
+          mainAxisAlignment: MainAxisAlignment.center,           
+          children: [  
             _image(),
             const SizedBox(height: 16),
             _informasi(),
