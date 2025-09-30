@@ -1,0 +1,28 @@
+name: template_quiz_mobile_si_b
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/avatar.png
+    - assets/images/genshin_impact.png
+    - assets/images/gta_v.png
+    - assets/images/minecraft.png
+    - assets/images/rdr2.png
+    - assets/images/valorant.png
+    - assets/images/witcher_3.png
+    - assets/images/logo.png
