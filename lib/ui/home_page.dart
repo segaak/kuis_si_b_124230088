@@ -3,9 +3,30 @@ import 'login_page.dart';
 import 'package:template_quiz_mobile_si_b/data/game_model_data.dart';
 import 'detail_page.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
   const Homepage({super.key, required this.username});
   final String username;
+
+  @override
+  State<Homepage> createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  TextEditingController searchController = TextEditingController();
+  List gameFilter = gameList; 
+
+  void _searchGame(String query) {
+    final hasil = gameList.where((game) {
+      final nama = game.gameName.toLowerCase();
+      final penerbit = game.gamePublisher.toLowerCase();
+      final keyword = query.toLowerCase();
+      return nama.contains(keyword) || penerbit.contains(keyword);
+    }).toList();
+
+    setState(() {
+      gameFilter = hasil;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,42 +40,55 @@ class Homepage extends StatelessWidget {
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) {
                 return LoginPage();
               }), (route) => false);
-            }, icon: Icon(Icons.logout_outlined)
+            }, 
+            icon: Icon(Icons.logout_outlined),
           ),
         ],
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Text('Selamat Datang, $username!'),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(2),
-                child: Container(
-                  color: Colors.grey[300],
-                  child: Center(
-                    child: GridView.builder(
-                      padding: EdgeInsets.all(8),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, 
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                        childAspectRatio: 0.8, 
-                      ),
-                      itemBuilder: (context, index){
-                        return _gameModel(context, index);
-                      }, 
-                      itemCount: gameList.length,
-                    ),
-                  ),
+      body: Column(
+        children: [
+          Text('Selamat Datang, ${widget.username}!'),
+          // 🔍 Search Bar
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchController,
+              onChanged: _searchGame,
+              decoration: InputDecoration(
+                hintText: "Cari game...",
+                prefixIcon: Icon(Icons.search),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(2),
+              child: Container(
+                color: Colors.grey[300],
+                child: GridView.builder(
+                  padding: EdgeInsets.all(8),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, 
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: 0.8, 
+                  ),
+                  itemBuilder: (context, index){
+                    return _gameModel(context, index);
+                  }, 
+                  itemCount: gameFilter.length,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+
   Widget _gameModel(BuildContext context, int index) {
     return InkWell(  
       onTap: () {
@@ -71,9 +105,9 @@ class Homepage extends StatelessWidget {
               child: Container(
                 width: double.infinity, 
                 color: Colors.grey[300],
-                child: gameList[index].gameImg.isNotEmpty 
+                child: gameFilter[index].gameImg.isNotEmpty 
                   ? Image.asset(
-                      gameList[index].gameImg,
+                      gameFilter[index].gameImg,
                       width: double.infinity,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
@@ -103,7 +137,7 @@ class Homepage extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        gameList[index].gameName,
+                        gameFilter[index].gameName,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
@@ -116,7 +150,7 @@ class Homepage extends StatelessWidget {
                     SizedBox(height: 4),
                     Flexible(
                       child: Text(
-                        gameList[index].gamePublisher,
+                        gameFilter[index].gamePublisher,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.pink,
@@ -127,7 +161,7 @@ class Homepage extends StatelessWidget {
                     ),
                      Flexible(
                       child: Text(
-                        gameList[index].gameDesc,
+                        gameFilter[index].gameDesc,
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.black,

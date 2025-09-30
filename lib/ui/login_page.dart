@@ -11,6 +11,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> { //ini harusnya dah otomtatis kebuat kalau bikin stateful widget
   String username = '';
   String password = '';
+   bool _isObscure = true;
   bool isLoginSuccess = true; // Awalnya true agar tombol berwarna pink
 
   @override
@@ -73,7 +74,7 @@ class _LoginPageState extends State<LoginPage> { //ini harusnya dah otomtatis ke
     );
   }
 
-  Widget _passwordField() {
+   Widget _passwordField() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: TextField(
@@ -82,14 +83,23 @@ class _LoginPageState extends State<LoginPage> { //ini harusnya dah otomtatis ke
         },
         decoration: InputDecoration(
           labelText: 'Password',
-          
           prefixIcon: Icon(Icons.lock),
+          suffixIcon: IconButton(
+            icon: Icon(
+              _isObscure ? Icons.visibility_off : Icons.visibility,
+            ),
+            onPressed: () {
+              setState(() {
+                _isObscure = !_isObscure;
+              });
+            },
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
         keyboardType: TextInputType.visiblePassword,
-        obscureText: true,
+        obscureText: _isObscure,
       ),
     );
   }

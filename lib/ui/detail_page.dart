@@ -14,6 +14,8 @@ class DetailPage extends StatefulWidget {
 }
 
 class _DetailPageState extends State<DetailPage> {
+  bool isLiked = false; 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +26,11 @@ class _DetailPageState extends State<DetailPage> {
       body: Column(
         children: [
           Container(
-            child: Image.asset(gameList[widget.index].gameImg, 
-            width: double.infinity,
-            fit: BoxFit.cover,),
+            child: Image.asset(
+              gameList[widget.index].gameImg, 
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
             padding: EdgeInsets.all(0),
             height: 250,
             width: double.infinity,
@@ -36,33 +40,52 @@ class _DetailPageState extends State<DetailPage> {
           Padding(
             padding: EdgeInsets.all(16),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
                   gameList[widget.index].gameName,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
-                 Text(
+                Text(
                   gameList[widget.index].gamePublisher,
                   textAlign: TextAlign.left, 
-                  style: TextStyle(
-                    fontSize: 16  
-                  ),
-                ),
-                 Text(
-                  gameList[widget.index].totalLike.toString(),
-                  textAlign: TextAlign.left, 
                   style: TextStyle(fontSize: 16),
-                ), 
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: Colors.pink,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          if (isLiked) {
+                            gameList[widget.index].totalLike--;
+                            isLiked = false;
+                          } else {
+                            gameList[widget.index].totalLike++;
+                            isLiked = true;
+                          }
+                        });
+                      },
+                    ),
+                    Text(
+                      "${gameList[widget.index].totalLike} Likes",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 8),
                 Text(
                   gameList[widget.index].gameDesc,
                   textAlign: TextAlign.justify,
                   style: TextStyle(fontSize: 16),
                 ),
-                SizedBox(height: 4,),
               ],
             ),
-            
           ),
         ],
       ),
